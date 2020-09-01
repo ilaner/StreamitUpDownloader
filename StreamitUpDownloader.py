@@ -104,7 +104,7 @@ def downloader(values, folder, id, year, semester):
             if not values[course]:
                 continue
             print(folder)
-            pathlib.Path(fr'{folder}\{course}').mkdir(parents=True, exist_ok=True)
+            pathlib.Path(fr'{folder}/{course}').mkdir(parents=True, exist_ok=True)
             cam_url = lesson["PrimaryVideo"]
             screen_url = lesson["SecondaryVideo"]
             date_str = lesson['CreationDate']
