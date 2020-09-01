@@ -29,7 +29,7 @@ def selector():
                                                                                     'which the academic year '
                                                                                     'starts\n for example: '
                                                                                     '2020 semester B is 2019')],
-        [sg.Text('Semester', size=(15, 1)), sg.InputText('1', key='-SEMESTER-'), sg.Text('Semester A: 1, Semester B: 2'
+        [sg.Text('Semester', size=(15, 1)), sg.InputText('1', key='-SEMESTER-'), sg.Text('Semester A: 1, Semester B: 2 '
                                                                                          'Semester Summer: Summer')],
         [sg.Submit(), sg.Cancel()]
     ]
@@ -87,6 +87,7 @@ def downloader(values, folder, id, year, semester):
     for course, lessons in courses_dct[(id, year, semester)].items():
         if values['-URL-']:
             with open(rf"{folder}/{id} {year} {semester} {course}.txt", "w") as output:
+                print('Loading...')
                 for lesson in lessons:
                     cam_url = lesson["PrimaryVideo"]
                     screen_url = lesson["SecondaryVideo"]
