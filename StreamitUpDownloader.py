@@ -113,7 +113,6 @@ def downloader(values, folder, id, year, semester):
             date_local = israel.localize(datetime_object)
             dt = date_local.strftime('%Y-%m-%d %H-%M')
             title = f'{dt} {id}'
-            print(dt)
             print(course)
             print(title)
             print(fr"Downloading... {folder}/{course}/{title}.mp4")
