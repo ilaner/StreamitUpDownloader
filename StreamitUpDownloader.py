@@ -45,7 +45,11 @@ def mainloop(window):
             window.close()
             exit()
         id = values['-ID-']
-        year = int(values['-YEAR-'])
+        try:
+            year = int(values['-YEAR-'])
+        except ValueError:
+            sg.popup(event, "Please enter correct course number!")
+            continue
         semester = f"Semester {values['-SEMESTER-']}"
         if (id, year, semester) in courses_dct:
             sg.popup(event, "Congratulations, we found your course! proceeding")
