@@ -70,11 +70,15 @@ def preferences(id, year, semester):
         [sg.Submit(tooltip='Click to submit this form'), sg.Cancel()]
     ]
     window = sg.Window("Choose your preferences", layout)
-    event, values = window.read()
-    if event == "Cancel":
-        window.close()
-        main()
-    folder = sg.popup_get_folder("Where do you want to save this?")
+    while True:
+
+        event, values = window.read()
+        if not event or event == "Cancel":
+            window.close()
+            main()
+        folder = sg.popup_get_folder("Where do you want to save this?")
+        if folder:
+            break
     window.close()
     return values, folder, id, year, semester
 
@@ -98,7 +102,6 @@ def downloader(values, folder, id, year, semester):
         for lesson in lessons:
             if not values[course]:
                 continue
-            folder = folder.strip()
             print(folder)
             pathlib.Path(fr'{folder}\{course}').mkdir(parents=True, exist_ok=True)
             cam_url = lesson["PrimaryVideo"]
