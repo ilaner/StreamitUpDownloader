@@ -40,7 +40,7 @@ def selector():
 def mainloop(window):
     while True:
         event, values = window.read()
-        if event == "Cancel":
+        if not event or event == "Cancel":
             sg.popup("Goodbye.")
             window.close()
             exit()
