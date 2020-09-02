@@ -48,11 +48,11 @@ def mainloop(window):
         try:
             year = int(values['-YEAR-'])
         except ValueError:
-            sg.popup(event, "Please enter correct course number!")
+            sg.popup(event, "Please enter correct year!")
             continue
         semester = f"Semester {values['-SEMESTER-']}"
         if (id, year, semester) in courses_dct:
-            sg.popup(event, "Congratulations, we found your course! proceeding")
+            sg.popup(event, "Congratulations, we found your course! proceeding...")
             window.close()
             return id, year, semester
         else:
@@ -75,7 +75,6 @@ def preferences(id, year, semester):
     ]
     window = sg.Window("Choose your preferences", layout)
     while True:
-
         event, values = window.read()
         if not event or event == "Cancel":
             window.close()
@@ -89,9 +88,10 @@ def preferences(id, year, semester):
 
 def downloader(values, folder, id, year, semester):
     for course, lessons in courses_dct[(id, year, semester)].items():
+        course_name = course.replace('/', ',')
         if values['-URL-']:
-            with open(rf"{folder}/{id} {year} {semester} {course}.txt", "w") as output:
-                print('Loading...')
+            with open(rf"{folder}/{id} {year} {semester} {course_name}.txt", "w") as output:
+                sg.popup('Creating links... please wait', auto_close=True)
                 for lesson in lessons:
                     cam_url = lesson["PrimaryVideo"]
                     screen_url = lesson["SecondaryVideo"]
@@ -102,33 +102,33 @@ def downloader(values, folder, id, year, semester):
                         is_screen = False
                     if values['-SCREEN-'] and is_screen:
                         output.write(f"{screen_url}\n")
-            print("Check your Folder!")
-            return
-        for lesson in lessons:
-            if not values[course]:
-                continue
-            print(folder)
-            pathlib.Path(fr'{folder}/{course}').mkdir(parents=True, exist_ok=True)
-            cam_url = lesson["PrimaryVideo"]
-            screen_url = lesson["SecondaryVideo"]
-            date_str = lesson['CreationDate']
-            datetime_object = parser.parse(date_str)
-            israel = pytz.timezone('Israel')
-            date_local = israel.localize(datetime_object)
-            dt = date_local.strftime('%Y-%m-%d %H-%M')
-            title = f'{dt} {id}'
-            print(course)
-            print(title)
-            print(fr"Downloading... {folder}/{course}/{title}.mp4")
-            download(cam_url, fr"{folder}/{course}/{title}.mp4")
-            is_screen = True
-            resp = h.request(screen_url, 'HEAD')
-            if not int(resp[0]['status']) < 400:
-                is_screen = False
-            if values['-SCREEN-'] and is_screen:
-                print(fr"Downloading... {folder}/{course}/{title} screen.mp4")
-                download(screen_url, fr"{folder}/{course}/{title} screen.mp4")
-        print("Check your Folder!")
+                sg.popup('Links for course created successfully, Proceeding', auto_close=True)
+        else:
+            for i, lesson in enumerate(lessons):
+                if not values[course]:
+                    continue
+                pathlib.Path(fr'{folder}/{course}').mkdir(parents=True, exist_ok=True)
+                cam_url = lesson["PrimaryVideo"]
+                screen_url = lesson["SecondaryVideo"]
+                date_str = lesson['CreationDate']
+                datetime_object = parser.parse(date_str)
+                israel = pytz.timezone('Israel')
+                date_local = israel.localize(datetime_object)
+                dt = date_local.strftime('%Y-%m-%d %H-%M')
+                title = f'{dt} {id}'
+                print(fr"Downloading... {folder}/{course}/{title}.mp4")
+                sg.popup(fr'Downloading {i+1} cam of {len(lessons)}, please wait...', auto_close=True)
+                download(cam_url, fr"{folder}/{course}/{title}.mp4")
+                sg.popup(fr'Downloading {i+1} cam of {len(lessons)} successfully, proceeding...', auto_close=True)
+                is_screen = True
+                resp = h.request(screen_url, 'HEAD')
+                if not int(resp[0]['status']) < 400:
+                    is_screen = False
+                if values['-SCREEN-'] and is_screen:
+                    sg.popup(fr'Downloading {i + 1} screen of {len(lessons)}, please wait...', auto_close=True)
+                    download(screen_url, fr"{folder}/{course}/{title} screen.mp4")
+                    sg.popup(fr'Downloading {i + 1} screen of {len(lessons)} successfully, proceeding...', auto_close=True)
+    sg.popup("Check your Folder!", auto_close=True)
 
 
 def main():
