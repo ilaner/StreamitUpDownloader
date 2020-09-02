@@ -66,8 +66,7 @@ def preferences(id, year, semester):
     for course in courses_dct[(id, year, semester)]:
         checkboxes.append([sg.Checkbox(course, default=True, key=course)])
     layout = [
-        [sg.Text('What do you want to download? How?', size=(30, 1), justification='center', font=("Helvetica", 25),
-                 relief=sg.RELIEF_RIDGE)],
+        [sg.Text('Choose your download preferences', size=(30, 1), justification='center', font=("Helvetica", 25))],
         [sg.Frame(layout=checkboxes, title='Folders', title_color='red', relief=sg.RELIEF_SUNKEN)],
         [sg.Text('Do you want the screen files? AKA presentations in the PC')],
         [sg.Radio('Yes', "SCREEN", key='-SCREEN-'), sg.Radio('No', "SCREEN", default=True)],
@@ -93,7 +92,7 @@ def downloader(values, folder, id, year, semester):
         course_name = course.replace('/', ',')
         if values['-URL-']:
             with open(rf"{folder}/{id} {year} {semester} {course_name}.txt", "w") as output:
-                sg.popup('Creating links... please wait', auto_close=True)
+                sg.popup('Creating links... please wait', auto_close=True, non_blocking=True)
                 for lesson in lessons:
                     cam_url = lesson["PrimaryVideo"]
                     screen_url = lesson["SecondaryVideo"]
@@ -104,7 +103,7 @@ def downloader(values, folder, id, year, semester):
                         is_screen = False
                     if values['-SCREEN-'] and is_screen:
                         output.write(f"{screen_url}\n")
-                sg.popup('Links for course created successfully, Proceeding', auto_close=True)
+                sg.popup('Links for course created successfully, Proceeding', auto_close=True, non_blocking=True)
         else:
             for i, lesson in enumerate(lessons):
                 if not values[course]:
@@ -119,20 +118,23 @@ def downloader(values, folder, id, year, semester):
                 dt = date_local.strftime('%Y-%m-%d %H-%M')
                 title = f'{dt} {id}'
                 print(fr"Downloading... {folder}/{course}/{title}.mp4")
-                sg.popup(fr'Downloading {i+1} cam of {len(lessons)}, please wait...', auto_close=True)
+                sg.popup(fr'Downloading {i + 1} cam of {len(lessons)}, please wait...', auto_close=True,
+                         non_blocking=True)
                 download(cam_url, fr"{folder}/{course}/{title}.mp4")
-                sg.popup(fr'Downloading {i+1} cam of {len(lessons)} successfully, proceeding...', auto_close=True)
+                sg.popup(fr'Downloading {i + 1} cam of {len(lessons)} successfully, proceeding...', auto_close=True,
+                         non_blocking=True)
                 is_screen = True
                 resp = h.request(screen_url, 'HEAD')
                 if not int(resp[0]['status']) < 400:
                     is_screen = False
                 if values['-SCREEN-'] and is_screen:
-                    sg.popup(fr'Downloading {i + 1} screen of {len(lessons)}, please wait...', auto_close=True)
+                    sg.popup(fr'Downloading {i + 1} screen of {len(lessons)}, please wait...', auto_close=True,
+                             non_blocking=True)
                     download(screen_url, fr"{folder}/{course}/{title} screen.mp4")
-                    sg.popup(fr'Downloading {i + 1} screen of {len(lessons)} successfully, proceeding...', auto_close=True)
-    sg.popup("Check your Folder!", auto_close=True)
+                    sg.popup(fr'Downloading {i + 1} screen of {len(lessons)} successfully, proceeding...',
+                             auto_close=True, non_blocking=True)
+    sg.popup("Check your Folder!", auto_close=True, non_blocking=True)
     webbrowser.open(os.path.realpath(folder))
-
 
 
 def main():
