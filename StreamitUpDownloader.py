@@ -7,6 +7,8 @@ import time
 import pytz
 from dateutil import parser
 import httplib2
+import webbrowser
+import os
 
 h = httplib2.Http()
 
@@ -129,6 +131,8 @@ def downloader(values, folder, id, year, semester):
                     download(screen_url, fr"{folder}/{course}/{title} screen.mp4")
                     sg.popup(fr'Downloading {i + 1} screen of {len(lessons)} successfully, proceeding...', auto_close=True)
     sg.popup("Check your Folder!", auto_close=True)
+    webbrowser.open(os.path.realpath(folder))
+
 
 
 def main():
