@@ -35,5 +35,5 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - ilanerukh@gmail.com
+Ilan Erukhimovich - ilanerukh@gmail.com
 
