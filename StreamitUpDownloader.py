@@ -16,7 +16,7 @@ h = httplib2.Http()
 
 
 def load_dct():
-    with open("better_urls.pkl", 'rb') as input:
+    with open("better_urls_fix.pkl", 'rb') as input:
         decoded = bytes(input.read())
     decoded = base64.b64decode(decoded)
     return pickle.loads(decoded)
