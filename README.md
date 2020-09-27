@@ -28,7 +28,7 @@ Choose between download all videos to your folder and getting all the downloadin
 <!-- LICENSE -->
 ## License
 
-I don't own any of the videos. This was done only for learning purpose and do not use it for practical reasons.
+I don't own any of the videos. This was done only for learning purposes and do not use it for practical reasons.
 
 
 <!-- CONTACT -->
