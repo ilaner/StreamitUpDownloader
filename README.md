@@ -28,8 +28,7 @@ Choose between download all videos to your folder and getting all the downloadin
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
-
+I don't own any of the videos. This was done only for learning purpose and do not use it for practical reasons.
 
 
 <!-- CONTACT -->
